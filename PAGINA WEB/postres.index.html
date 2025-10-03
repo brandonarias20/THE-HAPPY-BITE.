@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>The Happy Bite - Postres</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: linear-gradient(135deg, #ffcb05, #e21a1a);
+      color: #333;
+    }
+
+    header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 15px 20px;
+      background: rgba(255,255,255,0.9);
+      box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+    }
+
+    header h1 {
+      font-size: 1.8rem;
+      color: #e21a1a;
+      margin: 0;
+      animation: mover 3s infinite alternate;
+    }
+
+    @keyframes mover {
+      from { transform: translateX(0); }
+      to { transform: translateX(10px); }
+    }
+
+    .navbar a {
+      text-decoration: none;
+      margin: 0 10px;
+      font-weight: bold;
+      color: #333;
+      padding: 8px 15px;
+      border-radius: 20px;
+      transition: 0.3s;
+    }
+
+    .navbar a:hover {
+      background: #e21a1a;
+      color: #fff;
+    }
+
+    main {
+      padding: 20px;
+      text-align: center;
+    }
+
+    h2 {
+      margin-bottom: 20px;
+    }
+
+    .postres-container {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 20px;
+    }
+
+    .postre-item {
+      background: #fff;
+      border-radius: 15px;
+      overflow: hidden;
+      box-shadow: 0 6px 12px rgba(0,0,0,0.2);
+      transition: transform 0.3s;
+    }
+
+    .postre-item:hover {
+      transform: scale(1.05);
+    }
+
+    .postre-item img {
+      width: 100%;
+      height: 180px;
+      object-fit: cover;
+    }
+
+    .postre-info {
+      padding: 15px;
+      text-align: center;
+    }
+
+    .postre-info h3 {
+      margin: 10px 0;
+      font-size: 1.2rem;
+    }
+
+    .postre-info p {
+      margin: 5px 0;
+      color: #666;
+    }
+
+    .btn {
+      display: inline-block;
+      margin-top: 10px;
+      padding: 10px 20px;
+      background: #e21a1a;
+      color: #fff;
+      border: none;
+      border-radius: 25px;
+      cursor: pointer;
+      transition: 0.3s;
+    }
+
+    .btn:hover {
+      background: #ffcb05;
+      color: #333;
+      transform: scale(1.1);
+    }
+
+    .carrito {
+      margin-top: 30px;
+      padding: 20px;
+      background: rgba(255,255,255,0.9);
+      border-radius: 15px;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+      text-align: center;
+    }
+
+    .carrito h2 {
+      margin: 0 0 10px;
+    }
+
+    .carrito p {
+      font-size: 1.2rem;
+      font-weight: bold;
+    }
+
+  </style>
+</head>
+<body>
+  <!-- Header -->
+  <header>
+    <h1>🍔 The Happy Bite</h1>
+    <nav class="navbar">
+      <a href="MCDONALD.html">Inicio</a>
+      <a href="menu.index.html">Menú</a>
+      <a href="promociones.index.html">Promociones</a>
+      <a href="sucursales.index.html">Sucursales</a>
+      <a href="postres.index.html">Postres</a>
+      
+    </nav>
+  </header>
+
+  <main>
+    <h2>Deliciosos Postres 🍰🍦</h2>
+    <div class="postres-container">
+      <!-- Postres existentes -->
+      <div class="postre-item">
+        <img src="IMAGEN_26.jpg" alt="Helado">
+        <div class="postre-info">
+          <h3>Helado</h3>
+          <p>Helado cremoso en distintos sabores.</p>
+          <button class="btn" onclick="agregarAlCarrito(3.50)">Añadir al carrito</button>
+        </div>
+      </div>
+
+      <div class="postre-item">
+        <img src="IMAGEN_27.jpg" alt="Pastel de Chocolate">
+        <div class="postre-info">
+          <h3>Pastel de Chocolate</h3>
+          <p>Pastel húmedo de chocolate con cobertura deliciosa.</p>
+          <button class="btn" onclick="agregarAlCarrito(4.50)">Añadir al carrito</button>
+        </div>
+      </div>
+
+      <div class="postre-item">
+        <img src="IMAGEN_28.jpg" alt="Pastel de Piña">
+        <div class="postre-info">
+          <h3>Pastel de Piña</h3>
+          <p>Pastel suave con relleno y glaseado de piña.</p>
+          <button class="btn" onclick="agregarAlCarrito(4.00)">Añadir al carrito</button>
+        </div>
+      </div>
+
+      <div class="postre-item">
+        <img src="IMAGEN_29.jpg" alt="Pastel de 3 Leches">
+        <div class="postre-info">
+          <h3>Pastel de 3 Leches</h3>
+          <p>Delicioso pastel bañado en tres tipos de leche.</p>
+          <button class="btn" onclick="agregarAlCarrito(4.75)">Añadir al carrito</button>
+        </div>
+      </div>
+
+      <div class="postre-item">
+        <img src="IMAGEN_30.jpg" alt="Flan">
+        <div class="postre-info">
+          <h3>Flan</h3>
+          <p>Flan suave con caramelo natural.</p>
+          <button class="btn" onclick="agregarAlCarrito(3.25)">Añadir al carrito</button>
+        </div>
+      </div>
+
+      <!-- Nuevos 3 postres -->
+      <div class="postre-item">
+        <img src="IMAGEN_31.jpg" alt="Gelatina">
+        <div class="postre-info">
+          <h3>Gelatina</h3>
+          <p>Gelatina colorida y refrescante.</p>
+          <button class="btn" onclick="agregarAlCarrito(2.50)">Añadir al carrito</button>
+        </div>
+      </div>
+
+      <div class="postre-item">
+        <img src="IMAGEN_32.jpg" alt="Pastel de Fresa">
+        <div class="postre-info">
+          <h3>Pastel de Fresa</h3>
+          <p>Pastel con capas de crema y fresas frescas.</p>
+          <button class="btn" onclick="agregarAlCarrito(4.75)">Añadir al carrito</button>
+        </div>
+      </div>
+
+      <div class="postre-item">
+        <img src="IMAGEN_33.jpg" alt="Budín">
+        <div class="postre-info">
+          <h3>Budín</h3>
+          <p>Budín casero suave con aroma a vainilla.</p>
+          <button class="btn" onclick="agregarAlCarrito(3.25)">Añadir al carrito</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Carrito -->
+    <div class="carrito">
+      <h2>🛒 Carrito</h2>
+      <p>Total: $<span id="total">0.00</span></p>
+    </div>
+  </main>
+
+  <script>
+    let total = 0;
+
+    function agregarAlCarrito(precio) {
+      total += precio;
+      document.getElementById('total').textContent = total.toFixed(2);
+    }
+  </script>
+</body>
+</html>

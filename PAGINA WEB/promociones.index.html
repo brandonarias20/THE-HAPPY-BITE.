@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>The Happy Bite - Promociones</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: linear-gradient(135deg, #ffcb05, #e21a1a);
+      color: #333;
+    }
+
+    header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 15px 20px;
+      background: rgba(255,255,255,0.9);
+      box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+    }
+
+    header h1 {
+      font-size: 1.8rem;
+      color: #e21a1a;
+      margin: 0;
+      animation: mover 3s infinite alternate;
+    }
+
+    @keyframes mover {
+      from { transform: translateX(0); }
+      to { transform: translateX(10px); }
+    }
+
+    .navbar a {
+      text-decoration: none;
+      margin: 0 10px;
+      font-weight: bold;
+      color: #333;
+      padding: 8px 15px;
+      border-radius: 20px;
+      transition: 0.3s;
+    }
+
+    .navbar a:hover {
+      background: #e21a1a;
+      color: #fff;
+    }
+
+    main {
+      padding: 20px;
+      text-align: center;
+    }
+
+    h2 {
+      margin-bottom: 20px;
+    }
+
+    .promos-container {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 20px;
+    }
+
+    .promo-item {
+      background: #fff;
+      border-radius: 15px;
+      overflow: hidden;
+      box-shadow: 0 6px 12px rgba(0,0,0,0.2);
+      transition: transform 0.3s;
+    }
+
+    .promo-item:hover {
+      transform: scale(1.05);
+    }
+
+    .promo-item img {
+      width: 100%;
+      height: 180px;
+      object-fit: cover;
+    }
+
+    .promo-info {
+      padding: 15px;
+      text-align: center;
+    }
+
+    .promo-info h3 {
+      margin: 10px 0;
+      font-size: 1.2rem;
+    }
+
+    .promo-info p {
+      margin: 5px 0;
+      color: #666;
+    }
+
+    .btn {
+      display: inline-block;
+      margin-top: 10px;
+      padding: 10px 20px;
+      background: #e21a1a;
+      color: #fff;
+      border: none;
+      border-radius: 25px;
+      cursor: pointer;
+      transition: 0.3s;
+    }
+
+    .btn:hover {
+      background: #ffcb05;
+      color: #333;
+      transform: scale(1.1);
+    }
+
+    .carrito {
+      margin-top: 20px;
+      padding: 15px;
+      background: rgba(255,255,255,0.9);
+      border-radius: 15px;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+      font-weight: bold;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>🍔 The Happy Bite</h1>
+    <nav class="navbar">
+      <a href="MCDONALD.html">Inicio</a>
+      <a href="menu.index.html">Menú</a>
+      <a href="promociones.index.html">Promociones</a>
+      <a href="sucursales.index.html">Sucursales</a>
+      <a href="postres.index.html">Postres</a>
+     
+    </nav>
+  </header>
+
+  <main>
+    <h2>Promociones Especiales 🎉</h2>
+
+    <div class="promos-container">
+      <div class="promo-item">
+        <img src="IMAGEN_23.jpg" alt="Combo Doble + Refresco">
+        <div class="promo-info">
+          <h3>Combo para 4 personas</h3>
+          <p>4 hamburguesa clasicas + 4 papas + gaseosa</p>
+          <button class="btn" onclick="agregarAlCarrito(19.99)">Añadir al carrito</button>
+        </div>
+      </div>
+
+      <div class="promo-item">
+        <img src="IMAGEN_25.jpg" alt="Combo Familiar">
+        <div class="promo-info">
+          <h3>Combo Familiar</h3>
+          <p>12 hamburguesa clasicas + una montaña de papas fritas + 15 nugguets</p>
+          <button class="btn" onclick="agregarAlCarrito(49.99)">Añadir al carrito</button>
+        </div>
+      </div>
+
+      <div class="promo-item">
+        <img src="IMAGEN_24.jpg" alt="Hamburguesas">
+        <div class="promo-info">
+          <h3>Crunch Burguer</h3>
+          <p>4 crunch burguer + papas + gaseosa</p>
+          <button class="btn" onclick="agregarAlCarrito(25.99)">Añadir al carrito</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="carrito">
+      🛒 Total: $<span id="total">0.00</span>
+    </div>
+  </main>
+
+  <script>
+    let total = 0;
+    function agregarAlCarrito(precio) {
+      total += precio;
+      document.getElementById('total').textContent = total.toFixed(2);
+      alert('Agregado al carrito. Total: $' + total.toFixed(2));
+    }
+  </script>
+</body>
+</html>

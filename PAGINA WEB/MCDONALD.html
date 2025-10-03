@@ -1,0 +1,479 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>The Happy Bite — Hamburguesas Gourmet</title>
+  <style>
+    /* ---------- Reset & base ---------- */
+    :root{
+      --red:#af2911;
+      --yellow:#ffcc00;
+      --bg1: #fff8e1;
+      --card:#fff;
+      --text:#222;
+      --glass: rgba(255,255,255,0.6);
+      --glass-strong: rgba(255,255,255,0.85);
+      --accent:#b71c1c;
+    }
+    *{box-sizing:border-box;margin:0;padding:0}
+    html,body{height:100%}
+    body{
+      font-family:"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+      background: linear-gradient(180deg,var(--bg1), #fff3cd 60%);
+      color:var(--text);
+      -webkit-font-smoothing:antialiased;
+      min-height:100vh;
+      display:flex;
+      flex-direction:column;
+    }
+
+    /* ---------- Top navigation ---------- */
+    .topbar{
+      position:sticky; top:0;
+      z-index:50;
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:16px;
+      padding:12px 18px;
+      background: linear-gradient(90deg,var(--red), #c21a1a 60%);
+      box-shadow: 0 6px 18px rgba(0,0,0,0.15);
+      color:white;
+    }
+
+    .brand{
+      display:flex; align-items:center; gap:10px;
+      cursor:default;
+    }
+
+    .logo{
+      width:44px; height:44px;
+      background:var(--yellow);
+      border-radius:10px;
+      display:flex; align-items:center; justify-content:center;
+      font-weight:900; color:var(--red);
+      box-shadow:0 6px 12px rgba(0,0,0,0.15), inset 0 -6px 12px rgba(0,0,0,0.05);
+      transform-origin:center;
+      animation: logoFloat 4s ease-in-out infinite;
+    }
+
+    @keyframes logoFloat{
+      0%{transform: translateY(0) rotate(-4deg)}
+      50%{transform: translateY(-6px) rotate(4deg)}
+      100%{transform: translateY(0) rotate(-4deg)}
+    }
+
+    .title{
+      font-size:1.05rem;
+      letter-spacing:0.6px;
+      font-weight:700;
+      display:flex;
+      flex-direction:column;
+      line-height:1;
+      transform-origin:left;
+      animation: titlePulse 3.5s ease-in-out infinite;
+    }
+    .title small{font-weight:600; font-size:0.78rem; opacity:0.95}
+
+    @keyframes titlePulse{
+      0%{transform: translateX(0)}
+      50%{transform: translateX(6px)}
+      100%{transform: translateX(0)}
+    }
+
+    /* Navigation buttons style */
+    .nav button{
+      background:transparent;
+      border:2px solid rgba(255,255,255,0.12);
+      color:white;
+      padding:8px 14px;
+      border-radius:10px;
+      font-weight:700;
+      cursor:pointer;
+      transition: all 300ms ease;
+      position:relative; overflow:hidden;
+      backdrop-filter: blur(3px);
+    }
+    .nav button:hover{
+      transform:translateY(-4px) scale(1.02);
+      box-shadow:0 8px 18px rgba(0,0,0,0.25);
+      border-color:rgba(255,255,255,0.28);
+    }
+    .nav button:active{transform:translateY(-1px) scale(0.995)}
+
+    /* Ripple effect on buttons */
+    .ripple { position:relative; overflow:hidden }
+    .ripple:after{
+      content:""; position:absolute; width:120px; height:120px; border-radius:50%;
+      background: rgba(255,255,255,0.25); transform:scale(0); opacity:0;
+      transition: transform 0.6s ease, opacity 0.6s ease;
+      pointer-events:none;
+    }
+    .ripple:active:after{ transform:scale(1); opacity:1; transition:0s }
+
+    /* ---------- Page container ---------- */
+    .container{
+      width:100%; max-width:1200px; margin:22px auto; padding:0 16px; flex:1;
+    }
+
+    /* Sections behave like pages */
+    .page {
+      display:none;
+      animation: pageFade 300ms ease;
+    }
+    .page.active{ display:block }
+
+    @keyframes pageFade{
+      from{opacity:0; transform:translateY(8px)}
+      to{opacity:1; transform:translateY(0)}
+    }
+
+    /* ---------- Grid for products / lists ---------- */
+    .grid{
+      display:grid;
+      grid-template-columns: repeat(4,1fr);
+      gap:18px;
+      align-items:start;
+    }
+
+    .card{
+      background:var(--card);
+      border-radius:14px;
+      padding:12px;
+      box-shadow:0 8px 20px rgba(0,0,0,0.08);
+      border:1px solid rgba(0,0,0,0.04);
+      overflow:hidden;
+      transition: transform 300ms ease, box-shadow 300ms ease;
+    }
+    .card:hover{ transform:translateY(-8px); box-shadow:0 18px 36px rgba(0,0,0,0.12) }
+
+    .thumb{
+      width:100%; height:140px; object-fit:cover; border-radius:10px; margin-bottom:10px;
+      display:block;
+    }
+
+    .card h4{ font-size:1.05rem; margin-bottom:6px }
+    .card p{ font-size:0.95rem; color:#444; margin-bottom:10px }
+
+    .price{
+      font-weight:800; font-size:1.05rem; margin-bottom:8px;
+    }
+
+    /* Animated action buttons (add/ pedir) */
+    .btn{
+      display:inline-flex; gap:8px; align-items:center; justify-content:center;
+      padding:10px 12px; border-radius:10px; cursor:pointer; border:none; font-weight:700;
+      transition: transform 220ms cubic-bezier(.2,.9,.2,1), box-shadow 220ms;
+      position:relative; overflow:hidden;
+    }
+    .btn:active{ transform:scale(.98) }
+
+    .btn-primary{
+      background:linear-gradient(180deg,var(--red), var(--accent));
+      color:white; box-shadow:0 8px 22px rgba(183,28,28,0.25);
+    }
+    .btn-primary:hover{ transform:translateY(-6px); box-shadow:0 16px 32px rgba(183,28,28,0.28) }
+
+    .btn-secondary{
+      background:linear-gradient(180deg,var(--yellow), #e6b800);
+      color:var(--red);
+      box-shadow:0 8px 22px rgba(255,204,0,0.18);
+    }
+    .btn-secondary:hover{ transform:translateY(-6px); box-shadow:0 16px 32px rgba(255,204,0,0.22) }
+
+    /* Promo ribbon */
+    .ribbon{
+      position:absolute; right:10px; top:10px;
+      background:var(--yellow); color:var(--red); font-weight:800; padding:6px 8px; border-radius:8px;
+      font-size:0.8rem; box-shadow:0 6px 12px rgba(0,0,0,0.12)
+    }
+
+    /* Cart area fixed bottom on desktop */
+    .cart{
+      position:fixed; right:18px; bottom:18px; width:320px; max-width:90%;
+      background:var(--glass-strong); border-radius:12px; padding:12px;
+      box-shadow:0 20px 50px rgba(0,0,0,0.25);
+      border:1px solid rgba(0,0,0,0.06);
+      backdrop-filter: blur(6px);
+      display:flex; flex-direction:column; gap:8px; z-index:60;
+    }
+    .cart h3{ color:var(--red) }
+    .cart-list{ max-height:220px; overflow:auto; padding-right:8px }
+    .cart-item{ display:flex; justify-content:space-between; gap:8px; padding:6px 0; border-bottom:1px dashed rgba(0,0,0,0.06); align-items:center }
+    .cart-item small{ color:#333; opacity:0.8 }
+    .cart-total{ display:flex; justify-content:space-between; align-items:center; font-weight:900; font-size:1.05rem }
+
+    .confirm{ width:100%; padding:10px; border-radius:10px; border:none; cursor:pointer; font-weight:900 }
+    .confirm.buy{ background:linear-gradient(90deg,var(--red),var(--accent)); color:white }
+    .confirm.clear{ background:transparent; color:var(--red); border:2px solid rgba(183,28,28,0.12) }
+
+    /* ---------- Responsive ---------- */
+    @media (max-width:1000px){
+      .grid{ grid-template-columns: repeat(3,1fr) }
+      .brand .title{ font-size:0.95rem }
+    }
+    @media (max-width:760px){
+      .grid{ grid-template-columns: repeat(2,1fr) }
+      .topbar{ padding:10px }
+    }
+    @media (max-width:520px){
+      .grid{ grid-template-columns: 1fr }
+      .logo{ width:38px;height:38px }
+      .title small{ display:none }
+      .container{ padding:0 10px }
+      .cart{ right:8px; left:8px; bottom:8px; width:auto }
+    }
+
+    /* Simple utilities */
+    .center{ text-align:center }
+    .muted{ color:#666; font-size:0.92rem }
+  </style>
+</head>
+<body>
+
+ 
+
+  <!-- TOPBAR -->
+  <header class="topbar">
+    <div style="display:flex;gap:12px;align-items:center">
+      <div class="brand" onclick="location.href='index.html'" title="Ir al inicio">
+        <div class="logo">🍔</div>
+        <div class="title">
+          <span>The Happy Bite</span>
+          <small>Hamburguesas & Combos</small>
+        </div>
+      </div>
+    </div>
+
+    <!-- Links convertidos en botones -->
+    <div class="nav" role="navigation" aria-label="Navegación principal" style="display:flex; gap:10px; flex:1; justify-content:center;">
+      <button class="ripple" onclick="location.href='MCDONALD.html'">Inicio</button>
+      <button class="ripple" onclick="location.href='menu.index.html'">Menú</button>
+      <button class="ripple" onclick="location.href='promociones.index.html'">Promociones</button>
+      <button class="ripple" onclick="location.href='sucursales.index.html'">Sucursales</button>
+      <button class="ripple" onclick="location.href='postres.index.html'">Postres</button>
+      
+    </div>
+  </header>
+
+  <!-- MAIN CONTAINER -->
+  <main class="container">
+
+    <!-- HOME -->
+    <section id="home" class="page active">
+      <div style="display:flex;flex-direction:column;gap:12px">
+        <h1 style="color:var(--red)">Bienvenido a The Happy Bite</h1>
+        <p class="muted">Hamburguesas gourmet, combos y postres. Usa el menú para navegar o presiona "Ordenar" para ver todos los productos.</p>
+      </div>
+
+      <div style="margin-top:18px" class="grid">
+        <article class="card">
+          <img class="thumb" src="IMAGEN_1.jpg" alt="Combo clásico">
+          <div style="position:relative">
+            <h4>Combo Clásico</h4>
+            <p class="muted">Hamburguesa Clasica + papas + bebida</p>
+            <div class="price">$6.50$</div>
+            <div style="display:flex;gap:8px">
+              <button class="btn btn-primary ripple" onclick="addToCart('Combo Clásico',8)">Añadir</button>
+              <button class="btn btn-secondary ripple" onclick="location.href='menu.index.html'">Ver</button>
+            </div>
+            <div class="ribbon">Pop</div>
+          </div>
+        </article>
+
+        <article class="card">
+          <img class="thumb" src="IMAGEN_6.jpg" alt="Chesee Burguer">
+          <h4>Angus Premium</h4>
+          <p class="muted">1/4 de libra con queso + papas + gaseosa</p>
+          <div class="price">$9.99</div>
+          <div style="display:flex;gap:8px">
+            <button class="btn btn-primary ripple" onclick="addToCart('Angus Premium',12)">Añadir</button>
+            <button class="btn btn-secondary ripple" onclick="location.href='menu.index.html'">Ver</button>
+          </div>
+        </article>
+
+        <article class="card">
+          <img class="thumb" src="IMAGEN_7.jpg" alt="Premium Burguer">
+          <h4>Burguer Augus</h4>
+          <p class="muted">Carne Augus, cebolla caramelizada + gaseosa</p>
+          <div class="price">$7.99</div>
+          <div style="display:flex;gap:8px">
+            <button class="btn btn-primary ripple" onclick="addToCart('Papas Crujientes',3)">Añadir</button>
+            <button class="btn btn-secondary ripple" onclick="location.href='menu.index.html'">Ver</button>
+          </div>
+        </article>
+
+        <article class="card">
+          <img class="thumb" src="IMAGEN_8.jpg" alt="Crunch Burguer">
+          <h4>Crunch Burguer</h4>
+          <p class="muted">Pan artesanal dorado 100% carne  de res ala parrilla doble queso cheddar, tiras de tocino crujiente</p>
+          <div class="price">$4</div>
+          <div style="display:flex;gap:8px">
+            <button class="btn btn-primary ripple" onclick="addToCart('Postre Helado',4)">Añadir</button>
+            <button class="btn btn-secondary ripple" onclick="location.href='menu.index.html'">Ver</button>
+          </div>
+        </article>
+
+         <article class="card">
+          <img class="thumb" src="IMAGEN_9.jpg" alt="chesee lover">
+          <div style="position:relative">
+            <h4>Chesee lover</h4>
+            <p class="muted">Pan suave esponjoso carne de res a la parilla bañado en salsa de quesso cheddar acompañado con queso mozzarella y tiras de tocino</p>
+            <div class="price">$8.50$</div>
+            <div style="display:flex;gap:8px">
+              <button class="btn btn-primary ripple" onclick="addToCart('Combo Clásico',8)">Añadir</button>
+              <button class="btn btn-secondary ripple" onclick="location.href='menu.index.html'">Ver</button>
+            </div>
+            <div class="ribbon">Pop</div>
+          </div>
+        </article>
+
+         <article class="card">
+          <img class="thumb" src="IMAGEN_10.jpg" alt="Combo clásico">
+          <div style="position:relative">
+            <h4>Texas Smokehouse</h4>
+            <p class="muted">Pan artesanal ligeramente tostado, jugosa carne de res a la parrilla, cubierta con queso cheddar, crujiente tocino ahumado, aros de cebolla crispy y nuestra salsa BBQ estilo Texas. Una explosión de sabor ahumado que te transporta directo al corazón de Texas.
+
+</p>
+            <div class="price">$8.50$</div>
+            <div style="display:flex;gap:8px">
+              <button class="btn btn-primary ripple" onclick="addToCart('Combo Clásico',8)">Añadir</button>
+              <button class="btn btn-secondary ripple" onclick="location.href='menu.index.html'">Ver en menu</button>
+            </div>
+            <div class="ribbon">Pop</div>
+          </div>
+        </article>
+
+         <article class="card">
+          <img class="thumb" src="IMAGEN_11.jpg" alt="Combo clásico">
+          <div style="position:relative">
+            <h4>La suprema</h4>
+            <p class="muted">Pan artesanal, carne de res jugosa, doble queso cheddar, lechuga fresca, tomate, pepinillos, cebolla y nuestra salsa especial de la casa. La combinación perfecta de ingredientes clásicos con un toque supremo de sabor.</p>
+            <div class="price">$9.00$</div>
+            <div style="display:flex;gap:8px">
+              <button class="btn btn-primary ripple" onclick="addToCart('Combo Clásico',8)">Añadir</button>
+              <button class="btn btn-secondary ripple" onclick="location.href='menu.index.html'">Ver</button>
+            </div>
+            <div class="ribbon">Pop</div>
+          </div>
+        </article>
+
+         <article class="card">
+          <img class="thumb" src="IMAGEN_12.jpg" alt="Combo clásico">
+          <div style="position:relative">
+            <h4>Big crunch</h4>
+            <p class="muted">Pan doradito y crujiente, carne 100% de res a la parrilla, doble queso cheddar derretido, tiras de tocino crujiente, lechuga fresca, tomate jugoso y nuestra salsa especial.</p>
+            <div class="price">$7.50$</div>
+            <div style="display:flex;gap:8px">
+              <button class="btn btn-primary ripple" onclick="addToCart('Combo Clásico',8)">Añadir</button>
+              <button class="btn btn-secondary ripple" onclick="location.href='menu.index.html'">Ver</button>
+            </div>
+            <div class="ribbon">Pop</div>
+          </div>
+        </article>
+
+         <article class="card">
+          <img class="thumb" src="IMAGEN_13.jpg" alt="Combo clásico">
+          <div style="position:relative">
+            <h4>Super crunch</h4>
+            <p class="muted">Pan crujiente y doradito, carne 100% de res a la parrilla, queso cheddar fundido, tiras de tocino crujiente, lechuga fresca, tomate jugoso, cebolla crispy y nuestra salsa especial.</p>
+            <div class="price">$6.50$</div>
+            <div style="display:flex;gap:8px">
+              <button class="btn btn-primary ripple" onclick="addToCart('Combo Clásico',8)">Añadir</button>
+              <button class="btn btn-secondary ripple" onclick="location.href='menu.index.html'">Ver</button>
+            </div>
+            <div class="ribbon">Pop</div>
+          </div>
+        </article>
+
+         <article class="card">
+          <img class="thumb" src="IMAGEN_14.jpg" alt="Combo clásico">
+          <div style="position:relative">
+            <h4>Big Boss Burger</h4>
+            <p class="muted">Pan suave y ligeramente tostado, doble carne 100% de res, queso cheddar, tocino crujiente, aros de cebolla crispy, lechuga fresca, tomate jugoso y nuestra salsa secreta. Una hamburguesa poderosa, ideal para los que mandan en el sabor</p>
+            <div class="price">$9.50$</div>
+            <div style="display:flex;gap:8px">
+              <button class="btn btn-primary ripple" onclick="addToCart('Combo Clásico',8)">Añadir</button>
+              <button class="btn btn-secondary ripple" onclick="location.href='menu.index.html'">Ver</button>
+            </div>
+            <div class="ribbon">Pop</div>
+          </div>
+        </article>
+
+         <article class="card">
+          <img class="thumb" src="IMAGEN_15.jpg" alt="Combo clásico">
+          <div style="position:relative">
+            <h4>Crunch Total</h4>
+            <p class="muted">Pan suave y ligeramente tostado, carne 100% de res a la parrilla, doble queso cheddar, crujiente tocino, lechuga fresca, tomate jugoso, cebolla crispy y nuestra salsa especial.</p>
+            <div class="price">$8.99$</div>
+            <div style="display:flex;gap:8px">
+              <button class="btn btn-primary ripple" onclick="addToCart('Combo Clásico',8)">Añadir</button>
+              <button class="btn btn-secondary ripple" onclick="location.href='menu.index.html'">Ver</button>
+            </div>
+            <div class="ribbon">Pop</div>
+          </div>
+        </article>
+
+         <article class="card">
+          <img class="thumb" src="IMAGEN_16.jpg" alt="Combo clásico">
+          <div style="position:relative">
+            <h4>La Bestia BQQ</h4>
+            <p class="muted">Pan artesanal, carne de res jugosa a la parrilla, doble tocino crujiente, queso cheddar derretido, cebolla caramelizada y nuestra irresistible salsa BBQ</p>
+            <div class="price">$6.50$</div>
+            <div style="display:flex;gap:8px">
+              <button class="btn btn-primary ripple" onclick="addToCart('Combo Clásico',8)">Añadir</button>
+              <button class="btn btn-secondary ripple" onclick="location.href='menu.index.html'">Ver</button>
+            </div>
+            <div class="ribbon">Pop</div>
+          </div>
+        </article>
+
+
+      </div>
+    </section>
+
+    <!-- MENU PAGE -->
+    <section id="menu" class="page">
+      <h2>Menú completo</h2>
+      <p class="muted">Todos nuestros productos y combos disponibles. Toca "Pedir" para agregarlos al carrito.</p>
+
+      <div style="margin-top:12px" class="grid">
+        <article class="card">
+          <img class="thumb" src="IMAGEN_17.jpg" alt="Hamburguesa Clásica">
+          <h4>Hamburguesa Clásica</h4>
+          <p class="muted">Pan artesanal, carne 150g</p>
+          <div class="price">$5</div>
+          <div style="display:flex;gap:8px">
+            <button class="btn btn-primary ripple" onclick="addToCart('Hamburguesa Clásica',5)">Pedir</button>
+            <button class="btn btn-secondary ripple" onclick="addQtyPrompt('Hamburguesa Clásica',5)">+ Cantidad</button>
+          </div>
+        </article>
+        <article class="card">
+          <img class="thumb" src="https://picsum.photos/seed/menu2/600/400" alt="Combo Familiar">
+          <h4>Combo Familiar</h4>
+          <p class="muted">4 hamburguesas + 2 papas grandes</p>
+          <div class="price">$28</div>
+          <div style="display:flex;gap:8px">
+            <button class="btn btn-primary ripple" onclick="addToCart('Combo Familiar',28)">Pedir</button>
+            <button class="btn btn-secondary ripple" onclick="location.href='promociones.html'">Promos</button>
+          </div>
+          <div class="ribbon">Combo</div>
+        </article>
+        <article class="card">
+          <img class="thumb" src="https://picsum.photos/seed/menu3/600/400" alt="Pollo Crispy">
+          <h4>Pollo Crispy</h4>
+          <p class="muted">Crujiente, con salsa especial</p>
+          <div class="price">$6</div>
+          <div style="display:flex;gap:8px">
+            <button class="btn btn-primary ripple" onclick="addToCart('Pollo Crispy',6)">Pedir</button>
+            <button class="btn btn-secondary ripple" onclick="addQtyPrompt('Pollo Crispy',6)">+ Cantidad</button>
+          </div>
+        </article>
+        <article class="card">
+          <img class="thumb" src="https://picsum.photos/seed/menu4/600/400" alt="Bebida grande">
+          <h4>Bebida Grande</h4>
+          <p class="muted">Refresco o té helado</p>
+          <div class="price">$2</div>
+          <div style="display:flex;gap:8px">
+            <button class="btn btn-primary ripple" onclick
